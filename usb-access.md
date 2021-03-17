@@ -4,12 +4,12 @@ The Evercade's USB hardware supports treating the Evercade as a peripheral.
 This means you can make the Evercade behave as an Android device (using adbd), and connect to the Evercade from a computer using USB.
 This document describes how to make your Evercade device run adbd.
 
-1. Install rkdeveloptool
-2. Boot Evercade in flash mode
-3. Back up firmware
-4. Patch firmware
-5. Install firmware
-6. Connect with adb
+1. [Install rkdeveloptool][step 1]
+2. [Boot Evercade in flash mode][step 2]
+3. [Back up firmware][step 3]
+4. [Patch firmware][step 4]
+5. [Install firmware][step 5]
+6. [Connect with adb][step 6]
 
 ## 1. Install rkdeveloptool
 
@@ -47,7 +47,7 @@ Use rkdeveloptool to back up your Evercade's firmware.
 
 ## 4. Patch firmware
 
-1. Copy `original-boot.img` (created in [step 2][]) to `hacked-boot.img`.
+1. Copy `original-boot.img` (created in [step 3][]) to `hacked-boot.img`.
 2. Open `hacked-boot.img` in a hex editor.
 3. Search for the bytes `68 6F 73 74 00` (ASCII `host` followed by a null byte).
    Narrow the search down to the occurrence in the second-stage bootloader (i.e. not in the Linux kernel blob).
@@ -86,4 +86,9 @@ Connecting with adb has only been tested on firmware version 1.0.
 4. Run `adb shell`, `adb pull`, or whatever commands you want.
 
 [rkdeveloptool]: https://github.com/rockchip-linux/rkdeveloptool
-[step 2]:
+[step 1]: #1-install-rkdeveloptool
+[step 2]: #2-boot-evercade-in-flash-mode
+[step 3]: #3-back-up-firmware
+[step 4]: #4-patch-firmware
+[step 5]: #5-install-firmware
+[step 6]: #6-connect-with-adb
