@@ -25,6 +25,7 @@ set -u
 
 cd "$(dirname "${0}")"
 
+scripts_dir="${PWD}"
 source_dir="${PWD}/build/src"
 downloads_dir="${PWD}/build/downloads"
 
@@ -544,6 +545,7 @@ build_retroarch() {
     run tar xf "${downloads_dir}/RetroArch-1.9.0.tar.gz"
 
     cd RetroArch-1.9.0
+    patch -p1 <"${scripts_dir}/retroarch-input.patch"
     # TODO: libhq2x.so
     # TODO: --enable-vulkan --enable-kms --enable-alsa
     extra_cppflags="-DWL_EGL_PLATFORM"

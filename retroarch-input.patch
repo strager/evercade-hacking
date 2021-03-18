@@ -1,0 +1,16 @@
+The Evercade's input devices are registered as
+ID_INPUT_KEY=1. RetroArch only recognizes
+ID_INPUT_KEYBOARD=1 devices. Teach RetroArch about
+Evercade's input devices.
+
+--- a/input/drivers/udev_input.c
++++ b/input/drivers/udev_input.c
+@@ -94,7 +94,7 @@
+ /* NOTE: must be in sync with enum udev_input_dev_type */
+ static const char *g_dev_type_str[] =
+ {
+-   "ID_INPUT_KEYBOARD",
++   "ID_INPUT_KEY",
+    "ID_INPUT_MOUSE",
+    "ID_INPUT_TOUCHPAD"
+ };
