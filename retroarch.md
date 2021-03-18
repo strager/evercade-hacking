@@ -1,7 +1,7 @@
 # RetroArch
 
 Before building RetroArch, you must build a cross-compiling toolchain for Evercade.
-See [toolchain.md][] for instructions on building a toolchain.
+See [toolchain.md](toolchain.md) for instructions on building a toolchain.
 
 ## Building RetroArch
 
@@ -17,12 +17,10 @@ To avoid installing build-time dependencies your computer manually, you can buil
 
 ## Installing RetroArch
 
-Copy the `build/usr/arm-linux-gnueabihf/usr/bin/retroarch` executable to your Evercade using either `adb push` (assuming you have [adb access over USB][usb-access.md]) or [EverSD][].
+Copy the `build/usr/arm-linux-gnueabihf/usr/bin/retroarch` executable to your Evercade using either `adb push` (assuming you have [adb access over USB](usb-access.md)) or [EverSD][].
 
 ## Running RetroArch
 
 Good luck!
 
 [EverSD]: https://www.eversd.com/
-[toolchain.md]: toolchain.md
-[usb-access.md]: usb-access.md
