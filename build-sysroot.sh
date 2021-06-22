@@ -540,11 +540,11 @@ EOF
 }
 
 build_retroarch() {
-    download https://codeload.github.com/libretro/RetroArch/tar.gz/v1.9.0 RetroArch-1.9.0.tar.gz
-    rm -rf RetroArch-1.9.0
-    run tar xf "${downloads_dir}/RetroArch-1.9.0.tar.gz"
+    download https://codeload.github.com/libretro/RetroArch/tar.gz/v1.9.5 RetroArch-1.9.5.tar.gz
+    rm -rf RetroArch-1.9.5
+    run tar xf "${downloads_dir}/RetroArch-1.9.5.tar.gz"
 
-    cd RetroArch-1.9.0
+    cd RetroArch-1.9.5
     patch -p1 <"${scripts_dir}/retroarch-input.patch"
     # TODO: libhq2x.so
     # TODO: --enable-vulkan --enable-kms --enable-alsa
