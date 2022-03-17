@@ -40,11 +40,14 @@ toolchain_cxx="${toolchain_prefix}/bin/${target}-g++"
 default_cflags='-g -O2'
 default_cxxflags='-g -O2'
 
+target_cflags='-g -Ofast -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math'
+target_cxxflags='-g -Ofast -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -ffast-math'
+
 meson_cross_file="${toolchain_prefix}/meson-cross-file.ini"
 
 gcc_target_make_options=(
-    CFLAGS_FOR_TARGET="${default_cflags}"
-    CXXFLAGS_FOR_TARGET="${default_cxxflags}"
+    CFLAGS_FOR_TARGET="${target_cflags}"
+    CXXFLAGS_FOR_TARGET="${target_cxxflags}"
 )
 
 make_parallelism="-j$[$(nproc) * 5 / 4]"
@@ -292,7 +295,7 @@ build_libffi() {
     run tar xf "${downloads_dir}/libffi-3.2.1.tar.gz"
 
     cd libffi-3.2.1
-    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${target_cflags}" CXXFLAGS="${target_cxxflags}"
     run ./configure \
         --prefix="${sysroot}/usr" \
         --host="${target}" \
@@ -309,7 +312,7 @@ build_alsa() {
     run tar xf "${downloads_dir}/alsa-lib-1.2.4.tar.bz2"
 
     cd alsa-lib-1.2.4
-    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${target_cflags}" CXXFLAGS="${target_cxxflags}"
     run ./configure \
         --prefix="${sysroot}/usr" \
         --host="${target}" \
@@ -327,8 +330,8 @@ build_libdrm() {
 
     cd libdrm-2.4.104
     
-    run CFLAGS="${default_cflags}" \
-        CXXFLAGS="${default_cxxflags}" \
+    run CFLAGS="${target_cflags}" \
+        CXXFLAGS="${target_cxxflags}" \
         meson builddir/ \
         --cross-file "${meson_cross_file}" \
         --default-library=shared \
@@ -345,8 +348,8 @@ build_libxkbcommon() {
     run tar xf "${downloads_dir}/libxkbcommon-1.0.3.tar.xz"
 
     cd libxkbcommon-1.0.3
-    run CFLAGS="${default_cflags}" \
-        CXXFLAGS="${default_cxxflags}" \
+    run CFLAGS="${target_cflags}" \
+        CXXFLAGS="${target_cxxflags}" \
         meson builddir/ \
         --cross-file "${meson_cross_file}" \
         --default-library=shared \
@@ -366,7 +369,7 @@ build_wayland_protocols() {
     run tar xf "${downloads_dir}/wayland-protocols-1.20.tar.xz"
 
     cd wayland-protocols-1.20
-    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${target_cflags}" CXXFLAGS="${target_cxxflags}"
     run PATH="${toolchain_prefix}/bin:${PATH}" \
         ./configure \
         --prefix="${sysroot}/usr" \
@@ -381,7 +384,7 @@ build_expat() {
     run tar xf "${downloads_dir}/expat-2.2.5.tar.bz2"
 
     cd expat-2.2.5
-    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${target_cflags}" CXXFLAGS="${target_cxxflags}"
     run ./configure \
         --prefix="${sysroot}/usr" \
         --host="${target}" \
@@ -398,8 +401,8 @@ build_wayland() {
     run tar xf "${downloads_dir}/wayland-1.18.0.tar.xz"
 
     cd wayland-1.18.0
-    run CFLAGS="${default_cflags}" \
-        CXXFLAGS="${default_cxxflags}" \
+    run CFLAGS="${target_cflags}" \
+        CXXFLAGS="${target_cxxflags}" \
         meson builddir/ \
         --cross-file "${meson_cross_file}" \
         --default-library=shared \
@@ -420,7 +423,7 @@ build_zlib() {
     run tar xf "${downloads_dir}/zlib-1.2.11.tar.gz"
 
     cd zlib-1.2.11
-    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${target_cflags}" CXXFLAGS="${target_cxxflags}"
     run ./configure \
         --prefix="${sysroot}/usr" \
         --shared
@@ -436,8 +439,8 @@ build_mesa3d() {
     run tar xf "${downloads_dir}/mesa-20.3.4.tar.xz"
 
     cd mesa-20.3.4
-    run CFLAGS="${default_cflags}" \
-        CXXFLAGS="${default_cxxflags}" \
+    run CFLAGS="${target_cflags}" \
+        CXXFLAGS="${target_cxxflags}" \
         meson builddir/ \
         --cross-file "${meson_cross_file}" \
         --default-library=shared \
@@ -480,7 +483,7 @@ build_libmount() {
     run tar xf "${downloads_dir}/util-linux-2.36.2.tar.xz"
 
     cd util-linux-2.36.2
-    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${traget_cflags}" CXXFLAGS="${traget_cxxflags}"
     ./configure \
         --disable-all-programs \
         --enable-libblkid \
@@ -519,7 +522,7 @@ build_libudev() {
          if test "x$have_efi_lds" = xyes; then :
 
 EOF
-    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${target_cflags}" CXXFLAGS="${target_cxxflags}"
     run PKG_CONFIG_PATH="${sysroot}/usr/lib/pkgconfig" \
         ./configure \
         --prefix="${sysroot}/usr" \
@@ -559,8 +562,8 @@ build_retroarch() {
     run PATH="${toolchain_prefix}/bin:${PATH}" \
         CC="${toolchain_cc}" \
         CXX="${toolchain_cxx}" \
-        CFLAGS="${default_cflags} ${extra_cppflags}" \
-        CXXFLAGS="${default_cxxflags} ${extra_cppflags}" \
+        CFLAGS="${target_cflags} ${extra_cppflags}" \
+        CXXFLAGS="${target_cxxflags} ${extra_cppflags}" \
         LDFLAGS="-Wl,--as-needed -lffi -lwayland-server -lglapi -lexpat -Wl,--no-as-needed" \
         PKG_CONFIG_PATH="${sysroot}/usr/lib/pkgconfig" \
         ./configure \
