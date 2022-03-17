@@ -50,6 +50,7 @@ gcc_target_make_options=(
 make_parallelism="-j$[$(nproc) * 5 / 4]"
 
 build_toolchain=0
+build_strace=0
 build_libraries=0
 build_retroarch=0
 
@@ -71,6 +72,7 @@ parse_arguments() {
 
             libraries) build_libraries=1 ;;
             retroarch) build_retroarch=1 ;;
+            strace)    build_strace=1    ;;
             toolchain) build_toolchain=1 ;;
 
             *)
@@ -81,7 +83,7 @@ parse_arguments() {
         esac
         shift
     done
-    if [[ ! ( "${build_toolchain}" -eq 1 || "${build_libraries}" -eq 1 || "${build_retroarch}" -eq 1 ) ]]; then
+    if [[ ! ( "${build_toolchain}" -eq 1 || "${build_libraries}" -eq 1 || "${build_retroarch}" -eq 1 || "${build_strace}" -eq 1 ) ]]; then
         printf 'fatal: expected at least one target to build\n' >&2
         print_usage >&2
         exit 1
@@ -99,6 +101,7 @@ print_usage() {
     printf '                  (requires toolchain to be built)\n'
     printf '  - retroarch     console emulator (cross-compiled)\n'
     printf '                  (requires toolchain and libraries to be built)\n'
+    printf '  - strace        the strace debugging tool\n'
 }
 
 build_stuff() {
@@ -133,6 +136,10 @@ build_stuff() {
 
     if [[ "${build_retroarch}" -eq 1 ]]; then
         (build_retroarch)
+    fi
+
+    if [[ "${build_strace}" -eq 1 ]]; then
+        (build_strace)
     fi
 }
 
@@ -570,6 +577,20 @@ build_retroarch() {
     run "${toolchain_prefix}/bin/${target}-strip" \
         -o "${sysroot}/usr/bin/retroarch" \
         ./retroarch
+}
+
+build_strace() {
+    download https://strace.io/files/5.16/strace-5.16.tar.xz strace-5.16.tar.xz
+    rm -rf strace-5.16
+    run tar xf "${downloads_dir}/strace-5.16.tar.xz"
+
+    cd strace-5.16
+    export CC="${toolchain_cc}" CXX="${toolchain_cxx}" CFLAGS="${default_cflags}" CXXFLAGS="${default_cxxflags}"
+    run ./configure \
+        --prefix="${sysroot}/usr" \
+        --host="${target}"
+    run make ${make_parallelism}
+    run make install
 }
 
 build_gdbserver() {

@@ -9,5 +9,6 @@ This repository is not official.
 * [USB access and adb shell](usb-access.md)
 * [Build a C and C++ cross-compilation toolchain](toolchain.md)
 * [Build RetroArch](retroarch.md)
+* [Build debugging tools](dev-tools.md)
 
 [Evercade]: https://www.evercade.co.uk/
